@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talent Intelligence Engine - Live Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .input-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+        
+        .input-section input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .input-section input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .input-section button {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .input-section button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .input-section button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            color: #667eea;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .results {
+            display: none;
+        }
+        
+        .results.show {
+            display: block;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .signal-card {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .signal-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .signal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .signal-type {
+            font-weight: 600;
+            color: #667eea;
+            font-size: 14px;
+        }
+        
+        .confidence {
+            background: #667eea;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .signal-summary {
+            color: #555;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+        
+        .signal-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .talent-card {
+            background: #f0f4ff;
+            border-left: 4px solid #764ba2;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+        }
+        
+        .talent-header {
+            font-weight: 600;
+            color: #764ba2;
+            margin-bottom: 8px;
+        }
+        
+        .talent-detail {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 6px;
+        }
+        
+        .talent-hook {
+            background: white;
+            border-left: 2px solid #764ba2;
+            padding: 8px 12px;
+            margin-top: 10px;
+            font-size: 13px;
+            color: #764ba2;
+            font-weight: 500;
+            border-radius: 4px;
+        }
+        
+        .error {
+            background: #fee;
+            border-left: 4px solid #f44;
+            padding: 16px;
+            border-radius: 6px;
+            color: #c33;
+            margin-bottom: 20px;
+        }
+        
+        .info-box {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 16px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 20px 40px;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Talent Intelligence Engine</h1>
+            <p>Scan competitor companies for market signals & talent mobility</p>
+        </div>
+        
+        <div class="content">
+            <div class="info-box">
+                <strong>How it works:</strong> Enter a company name, click "Scan", and watch real-time market signals populate. This system uses Gemini API to search the web for organizational events (layoffs, RTO changes, leadership changes, hiring patterns).
+            </div>
+            
+            <div class="input-section">
+                <input 
+                    type="text" 
+                    id="companyInput" 
+                    placeholder="Enter company name (e.g., Flipkart, Google, Microsoft...)"
+                    onkeypress="if(event.key==='Enter') scanCompany()"
+                >
+                <button onclick="scanCompany()" id="scanBtn">Scan</button>
+            </div>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Searching for market signals...</p>
+                <p style="font-size: 12px; margin-top: 10px;">This may take 30-60 seconds</p>
+            </div>
+            
+            <div class="results" id="results">
+                <div id="errorContainer"></div>
+                <div id="marketRadarContainer"></div>
+                <div id="talentMapContainer"></div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            Built with Gemini 2.0 API + Google Apps Script architecture | 
+            <a href="https://github.com" style="color: #667eea;">View on GitHub</a>
+        </div>
+    </div>
+
+    <script>
+        // YOUR API KEY GOES HERE
+        const API_KEY = 'YOUR_API_KEY_HERE';
+        
+        async function scanCompany() {
+            const companyInput = document.getElementById('companyInput');
+            const company = companyInput.value.trim();
+            
+            if (!company) {
+                alert('Please enter a company name');
+                return;
+            }
+            
+            if (API_KEY === 'YOUR_API_KEY_HERE') {
+                showError('API Key not configured. Please add your Gemini API key to the HTML file.');
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('results').classList.remove('show');
+            document.getElementById('scanBtn').disabled = true;
+            
+            try {
+                const queries = [
+                    `${company} layoffs restructuring headcount reduction 2025 2026 news`,
+                    `${company} return to office RTO policy changes 2025`,
+                    `${company} CEO CTO leadership change departure 2025`,
+                    `${company} hiring jobs expansion 2025`
+                ];
+                
+                let allMarketRadarData = [];
+                let allTalentMapData = [];
+                
+                for (const query of queries) {
+                    try {
+                        const result = await callGeminiAPI(query, company);
+                        if (result.marketRadar) {
+                            allMarketRadarData = allMarketRadarData.concat(result.marketRadar);
+                        }
+                        if (result.talentMap) {
+                            allTalentMapData = allTalentMapData.concat(result.talentMap);
+                        }
+                    } catch (e) {
+                        console.log('Query failed:', query, e);
+                    }
+                }
+                
+                document.getElementById('loading').style.display = 'none';
+                displayResults(company, allMarketRadarData, allTalentMapData);
+                document.getElementById('results').classList.add('show');
+                
+            } catch (error) {
+                document.getElementById('loading').style.display = 'none';
+                showError('Error: ' + error.message);
+                document.getElementById('results').classList.add('show');
+            } finally {
+                document.getElementById('scanBtn').disabled = false;
+            }
+        }
+        
+        async function callGeminiAPI(query, company) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${API_KEY}`;
+            
+            const payload = {
+                contents: [{
+                    parts: [{
+                        text: `You are a market intelligence extractor. Analyze this query about ${company} and extract structured market signals:
+
+Query: "${query}"
+
+Return ONLY valid JSON (no preamble):
+{
+  "events": [
+    {
+      "company": "${company}",
+      "eventType": "Layoff|RTO|Leadership Change|Expansion|Other",
+      "summary": "2-3 sentence summary of the event",
+      "impact": "High|Medium|Low",
+      "source": "source if available",
+      "confidence": 0.0 to 1.0
+    }
+  ]
+}
+
+If no relevant data found, return: { "events": [] }
+
+Return ONLY JSON.`
+                    }]
+                }]
+            };
+            
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            
+            const data = await response.json();
+            
+            if (data.error) {
+                throw new Error(data.error.message);
+            }
+            
+            const responseText = data.candidates[0].content.parts[0].text;
+            const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+            
+            if (!jsonMatch) {
+                return { marketRadar: [], talentMap: [] };
+            }
+            
+            const parsedData = JSON.parse(jsonMatch[0]);
+            
+            const marketRadar = [];
+            const talentMap = [];
+            
+            if (parsedData.events && parsedData.events.length > 0) {
+                for (const event of parsedData.events) {
+                    marketRadar.push({
+                        company: company,
+                        eventType: event.eventType || 'Unknown',
+                        summary: event.summary || '',
+                        impact: event.impact || 'Medium',
+                        source: event.source || 'Web Search',
+                        confidence: event.confidence || 0.5,
+                        timestamp: new Date().toLocaleString()
+                    });
+                    
+                    if (['Layoff', 'Leadership Change', 'Expansion'].includes(event.eventType)) {
+                        talentMap.push({
+                            company: company,
+                            division: extractDivision(event.summary),
+                            signal: event.eventType,
+                            outreachHook: generateOutreachHook(event),
+                            timestamp: new Date().toLocaleString()
+                        });
+                    }
+                }
+            }
+            
+            return { marketRadar, talentMap };
+        }
+        
+        function extractDivision(text) {
+            const divisions = ['Engineering', 'Sales', 'Product', 'Operations', 'HR', 'Finance', 'Marketing'];
+            for (const div of divisions) {
+                if (text.toLowerCase().includes(div.toLowerCase())) return div;
+            }
+            return 'General';
+        }
+        
+        function generateOutreachHook(event) {
+            if (event.eventType === 'Layoff') {
+                return `High-intent outreach window for displaced professionals`;
+            } else if (event.eventType === 'Leadership Change') {
+                return 'Leadership transition may create hiring opportunities';
+            } else if (event.eventType === 'Expansion') {
+                return 'Active hiring phase - strong engagement window';
+            }
+            return 'Monitor for talent mobility opportunities';
+        }
+        
+        function displayResults(company, marketRadar, talentMap) {
+            const container = document.getElementById('results');
+            let html = '';
+            
+            if (marketRadar.length === 0 && talentMap.length === 0) {
+                html += '<div class="no-results"><p>No market signals found for this company. Try another company or check back later.</p></div>';
+            } else {
+                // Market Radar Section
+                if (marketRadar.length > 0) {
+                    html += `<div class="section-title">📊 Market Radar - ${company}</div>`;
+                    for (const signal of marketRadar) {
+                        html += `
+                            <div class="signal-card">
+                                <div class="signal-header">
+                                    <span class="signal-type">${signal.eventType}</span>
+                                    <span class="confidence">${Math.round(signal.confidence * 100)}% confidence</span>
+                                </div>
+                                <div class="signal-summary">${signal.summary}</div>
+                                <div class="signal-meta">
+                                    <span>📍 ${signal.impact} Impact</span>
+                                    <span>🔗 ${signal.source}</span>
+                                    <span>⏰ ${signal.timestamp}</span>
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
+                
+                // Talent Map Section
+                if (talentMap.length > 0) {
+                    html += `<div class="section-title">🎯 Talent Map - Outreach Opportunities</div>`;
+                    for (const talent of talentMap) {
+                        html += `
+                            <div class="talent-card">
+                                <div class="talent-header">${talent.company} - ${talent.division}</div>
+                                <div class="talent-detail">Signal: ${talent.signal}</div>
+                                <div class="talent-hook">💡 ${talent.outreachHook}</div>
+                                <div class="talent-detail" style="margin-top: 8px; font-size: 11px;">Found: ${talent.timestamp}</div>
+                            </div>
+                        `;
+                    }
+                }
+            }
+            
+            container.innerHTML = html;
+        }
+        
+        function showError(message) {
+            const errorContainer = document.getElementById('errorContainer');
+            errorContainer.innerHTML = `<div class="error">${message}</div>`;
+        }
+    </script>
+</body>
+</html>
