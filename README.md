@@ -52,6 +52,54 @@ This system = $240-600/year
 
 ---
 
+## GEMINI API WITH WEB SEARCH GROUNDING**
+
+Gemini doesn't just use old training data. It has live web search built in.
+
+When you query Gemini API, it:
+
+Takes your search query (e.g., "Flipkart layoffs 2025")
+Searches the LIVE web using Google Search
+Pulls from:
+News sites (Business Today, ET, Times of India, etc.)
+Financial media (Bloomberg, Reuters, etc.)
+Tech forums (Hacker News, Reddit, tech blogs)
+Company announcements (LinkedIn, company websites)
+Press releases
+Social media discussions
+Any publicly available content on the internet
+Returns current results (not old training data)
+AI extracts structured data from those results
+Your code formats as JSON and puts in sheets
+KEY POINT: IT'S REAL-TIME
+✅ Gets TODAY's news/data
+✅ Not limited to training data cutoff
+✅ Searches across entire open web
+✅ Multiple queries = comprehensive coverage
+
+EXAMPLE:
+Your query: "Flipkart layoffs 2025"
+
+What Gemini does:
+
+Searches Google for that phrase
+Finds: Business Today article, ET article, Twitter discussions, LinkedIn posts
+Reads those articles
+Extracts: "12% headcount reduction" + "500 ops staff" + "announced Sep 2024"
+Returns as structured JSON
+
+Your code:
+6. Parses that JSON
+7. Puts it in Market Radar sheet
+8. Done
+
+"The system uses Gemini API with live Google Search grounding. When I query for
+'Flipkart layoffs', it doesn't use old training data - it actually searches the
+live web right now. Pulls from news sites, financial media, tech forums, company
+announcements. Then AI extracts structured intelligence from those results.
+
+---
+
 ## Setup (15 minutes)
 
 1. Create Google Sheet named "Talent Intelligence Engine"
