@@ -26,6 +26,32 @@ Enter company names → Click "Scan" → Get:
 
 ---
 
+## What Costs Money (Gemini API)**
+
+⚠️ Gemini API — Paid after free trial
+
+Here's the exact breakdown:
+
+First month: You get $5 free credits just for signing up
+That $5 covers: Roughly 100-200 scans (depending on company count)
+After $5 runs out: You pay actual usage
+Input tokens: ~$0.075 per 1M tokens
+Output tokens: ~$0.30 per 1M tokens
+
+Real cost for your use case:
+
+Scanning 5 companies 1x/week = ~$20-30/month
+Scanning 5 companies daily = ~$100-150/month
+Scanning 15 companies 1x/week = ~$40-60/month
+
+vs. Competitors:
+
+LinkedIn Talent Insights = $5,000+/year
+Talent Neuron = $10,000+/year
+This system = $240-600/year
+
+---
+
 ## Setup (15 minutes)
 
 1. Create Google Sheet named "Talent Intelligence Engine"
