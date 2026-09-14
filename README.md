@@ -1,11 +1,8 @@
 # Talent Intelligence Engine- 
-Built for TA teams who want market intelligence without the $5K/year price tag.
+Built for TA teams who want market intelligence without the <$5K/year price tag. The code was generated & uploaded with the help of Claude AI & this was built that works on free API credits quota.
 
 Scan competitor companies for market signals (layoffs, RTO changes, leadership changes) using Gemini API + Google Apps Script.
-
 **[Live Demo](https://bilal127.github.io/talent-intelligence-engine/) | [GitHub](https://github.com/bilal127/talent-intelligence-engine)**
-
-The code was generated & uploaded with the help of Claude AI.
 
 ---
 
