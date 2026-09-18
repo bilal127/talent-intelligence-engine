@@ -2,8 +2,25 @@
 Built for TA teams who want market intelligence without the <$5K/year price tag. The code was generated & uploaded with the help of Claude AI & this was built that works on free API credits quota.
 
 Scan competitor companies for market signals (layoffs, RTO changes, leadership changes) using Gemini API + Google Apps Script.
-**[Live Demo](https://bilal127.github.io/talent-intelligence-engine/) | [GitHub](https://github.com/bilal127/talent-intelligence-engine)**
 
+The production Google Sheet system has real working results.  ✅ Google Sheet results (8 signals, 6 opportunities) = PROOF IT WORKS.
+**[https://docs.google.com/spreadsheets/d/1qsVZbR4ZeFH6t9P7zzlscGJ0EjEq8unN2gqCfIlgR_4/edit?gid=0#gid=0]**
+
+
+**[Live Demo](https://bilal127.github.io/talent-intelligence-engine/)** Please note below:
+The system is currently out of free API quota for this month. I received $5 in monthly free credits from Gemini API. During development and testing, I used those $5 credits on:
+-Google Sheet scans (multiple companies)
+-Web demo testing (live searches)
+-Each scan costs ~$0.01, so ~500 scans can be run monthly on free tier. I exhausted the quota after testing.
+
+However, the Google Sheet shows working results from earlier in the month - 8 market signals and 6 talent opportunities found. The web demo uses identical architecture, just deployed as a frontend.
+
+For production use, the math works like this:
+Free tier: $5/month = 500 scans
+Paid tier (starting): $10/month = 1,500+ scans
+Enterprise: $500/month = 50,000+ scans
+
+The system scales linearly with budget.
 ---
 
 ## What It Does
